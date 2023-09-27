@@ -17,6 +17,11 @@ runs:
     - name: 'Build'
       shell: bash
       run: |
+        del /f package-lock.json
+        rd /s /q node_modules
+        npm cache clean
+        npm cache verify
+        npm update
         npm install
         npm ci
         npm run build
