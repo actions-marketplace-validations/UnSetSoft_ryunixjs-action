@@ -1,0 +1,42 @@
+name: 'Deploy RyunixJS to GitHub Pages'
+description: 'Build and deploy ryunixjs to GitHub pages'
+inputs:
+  install_command:
+      description: 'Specifies the command to run the installation.'
+      required: false
+      default: 'npm i'
+  build_command:
+    description: 'Specifies the command to run after the install command for the build'
+    required: false
+    default: 'npm run build'
+outputs:
+  page_url:
+    description: "page url"
+    value: ${{ steps.deploy.outputs.page_url }}
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Checkout if required
+      if: ${{ inputs.checkout == 'true' }}
+      uses: actions/checkout@v3
+
+    - name: 'Build'
+      shell: bash
+      run: |
+        echo "::group::Build"
+        ${{ inputs.install_command }}
+        ${{ inputs.build_command }}
+        echo "::endgroup::"
+
+    - name: 'upload'
+      uses: actions/upload-pages-artifact@v1.0.4
+      with: 
+        path: ${{ inputs.path }}
+
+    - id: deploy
+      name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v1
+      with:
+        token: ${{ github.token }}
