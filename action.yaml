@@ -1,5 +1,12 @@
 name: 'Deploy RyunixJS to GitHub Pages'
 description: 'Build and deploy ryunixjs to GitHub pages'
+
+inputs:
+  path:
+    description: 'Build directory'
+    required: false
+    default: '.ryunix'
+    
 outputs:
   page_url:
     description: "page url"
