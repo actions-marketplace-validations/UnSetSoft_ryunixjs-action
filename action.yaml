@@ -9,17 +9,15 @@ runs:
   using: 'composite'
 
   steps:
-    - name: Setup Node
-      uses: actions/setup-node@v3.8.1
+    - name: Download files from the current repository
+      uses: actions/checkout@v2
+    - name: Install Node.js
+      uses: actions/setup-node@v1
       with:
         node-version: "18"
-
     - name: 'Build'
       shell: bash
       run: |
-        npm cache clean
-        npm cache verify
-        npm update
         npm install
         npm ci
         npm run build
